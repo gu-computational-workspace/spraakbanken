@@ -15,3 +15,5 @@ kuberay-cluster-head-nbkkm                             2/2     Running   0      
 [root@csc01-p kuberay]# oc port-forward kuberay-cluster-head-nbkkm 8265:8265 >/dev/null 2>&1 &
 [1] 14017
 ```
+<p>Runtime environments are used for application dependencies. Dependencies are installed dynamically on the cluster at runtime and cached for future use. In this example we specify the runtime environment on a per job basis. We do so in the run_ray_transformers.py file. Any packages specified in the requirements.txt file will be installed. Also note that we have set the working directory to `./`. This means that any files in this directory will be uploaded to the cluster and accessible from the application code. You can read more about environment dependencies [here](https://docs.ray.io/en/latest/ray-core/handling-dependencies.html)</p>
+
