@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 import glob
 import json
 import logging
@@ -11,9 +9,7 @@ import yaml
 import ray
 
 import torch
-# from sentence_transformers import SentenceTransformer
-
-runtime_env = {"pip": ["PyYAML==6.0.1","sentence-transformers==3.1.1","ruff==0.5.7","boto3"]}
+from sentence_transformers import SentenceTransformer
 
 FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 ch = logging.StreamHandler(stream=sys.stdout)
@@ -21,7 +17,6 @@ ch.setLevel(logging.INFO)
 ch.setFormatter(logging.Formatter(FORMAT))
 logging.root.setLevel(logging.INFO)
 logging.root.addHandler(ch)
-
 
 def chunkify(lst, n):
     if n == 0:
@@ -41,9 +36,7 @@ def run_file(file, out_dir, model):
         with open(os.path.join(out_dir, os.path.basename(file)), "w") as fp_out:
             encode_lines(fp_out, fp, model)
 
-@ray.remote
 def create_model(device):
-    from sentence_transformers import SentenceTransformer
     return SentenceTransformer(
         "KBLab/sentence-bert-swedish-cased",
         tokenizer_kwargs={"clean_up_tokenization_spaces": True},
@@ -56,9 +49,10 @@ def run(n, chunk, out_dir):
     for file in chunk:
         run_file(file, out_dir, model)
 
-@ray.remote
 def main(corpus):
+
     config = yaml.safe_load(open("config.yml"))
+
     files = glob.glob(
         os.path.join(config["transformers_postprocess_dir"], corpus, "texts/*")
     )
@@ -78,7 +72,7 @@ def main(corpus):
         If there are GPUs available, split the input files into chunks and run each set on a distinct GPU 
         """
         processes = []
-	# disable running on many GPUs
+	    # disable running on many GPUs
         for n, chunk in chunkify(files, 1): # torch.cuda.device_count()):
             p = torch.multiprocessing.Process(target=run, args=(n, chunk, out_dir))
             p.start()
@@ -90,9 +84,6 @@ def main(corpus):
         for file in files:
             run_file(file, out_dir, model)
 
-
-# if __name__ == "__main__":
-#    torch.multiprocessing.set_start_method("spawn", force=True)
-
-ray.init(runtime_env=runtime_env)
-main(sys.argv[1])
+if __name__ == "__main__":
+     torch.multiprocessing.set_start_method("spawn", force=True)
+     main(sys.argv[1])
