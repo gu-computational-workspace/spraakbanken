@@ -31,7 +31,7 @@ In production, we may want to revisit this approach and consider using multiple 
 
 The sbdata01 network share is mounted in the worker nodes. The mount point is `/mnt/sbdata01`. The transformers data directory is set to `transformers_postprocess_dir: /mnt/sbdata01/strix/kuberay/transformers_data` in the `config.yml` file. 
 
-To submit the Ray jon, or python application, run the following:
+To submit the Ray job, or python application, run the following:
 ```
 python run_ray_transformers.py <corpus>
 ```
