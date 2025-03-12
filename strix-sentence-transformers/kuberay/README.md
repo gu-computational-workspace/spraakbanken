@@ -21,7 +21,7 @@ Runtime environments are used to manage application dependencies. Dependencies a
 
 In this example, we specify the runtime environment on a per-job basis in the `run_ray_transformers.py` file. Any packages listed in the `requirements.txt` file will be installed. Additionally, we have set the working directory to `./`, meaning that all files in this directory will be uploaded to the cluster at runtime and will be accessible from the application code. You can read more about environment dependencies [here](https://docs.ray.io/en/latest/ray-core/handling-dependencies.html)
 
-Note that working directories can be specified aa [remote URIs](https://docs.ray.io/en/latest/ray-core/handling-dependencies.html#remote-uris), such as a S3 bucket. I strongly recommend considering the use of object storage buckets instead of local or network storage wherever appropriate.
+Note that working directories can be specified as [remote URIs](https://docs.ray.io/en/latest/ray-core/handling-dependencies.html#remote-uris), such as a S3 bucket. I strongly recommend considering the use of object storage buckets instead of local or network storage wherever appropriate.
 
 Spraakbanken aims to run arbitrary Python code or applications in the cluster with minimal modifications. For this reason, none of the functions have been marked as Ray remote functions, meaning we are not leveraging Ray's parallel or distributed execution paradigm. This will be evident when viewing the Jobs in the [Ray Dashboard](https://ray-dashboard-kuberay-cluster-cspace-sb.apps.op1.compute.gu.se), where it will indicate that "no Ray driver" was present. 
 
