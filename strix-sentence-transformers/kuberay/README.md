@@ -13,8 +13,8 @@ For now, the following is required:
 [root@csc01-p kuberay]# oc project cspace-sb
 Already on project "cspace-sb" on server "https://api.op1.compute.gu.se:6443".
 [root@csc01-p kuberay]# oc get pods |grep head
-kuberay-cluster-head-qpm26                             2/2     Running   0              4h57m
-[root@csc01-p kuberay]# oc port-forward kuberay-cluster-head-qpm26 8265:8265 >/dev/null 2>&1 &
+kuberay-cluster-head-ngqhf                             2/2     Running   0              4h57m
+[root@csc01-p kuberay]# oc port-forward kuberay-cluster-head-ngqhf 8265:8265 >/dev/null 2>&1 &
 [1] 14017
 ```
 Runtime environments are used to manage application dependencies. Dependencies are dynamically installed on the cluster at runtime and cached for future use, eliminating the need to build or maintain custom container images.
