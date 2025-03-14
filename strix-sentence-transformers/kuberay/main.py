@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import glob
 import json
 import logging
@@ -7,9 +9,12 @@ import shutil
 import sys
 import yaml
 import ray
+import s3fs
 
 import torch
 from sentence_transformers import SentenceTransformer
+
+from ray.util import inspect_serializability
 
 FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 ch = logging.StreamHandler(stream=sys.stdout)
@@ -49,6 +54,7 @@ def run(n, chunk, out_dir):
     for file in chunk:
         run_file(file, out_dir, model)
 
+@ray.remote
 def main(corpus):
 
     config = yaml.safe_load(open("config.yml"))
@@ -86,4 +92,7 @@ def main(corpus):
 
 if __name__ == "__main__":
      torch.multiprocessing.set_start_method("spawn", force=True)
-     main(sys.argv[1])
+
+     ray.init()
+     obj_ref = main.remote(sys.argv[1])
+     print(ray.get(obj_ref))
