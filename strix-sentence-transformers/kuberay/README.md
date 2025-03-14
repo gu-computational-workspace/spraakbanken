@@ -27,6 +27,8 @@ Spraakbanken aims to run arbitrary Python code or applications in the cluster wi
 
 However, if we wanted to take advantage of this capability, we could define the function `def main(corpius)` as a Ray remote function. Such functions execute asynchronously on separate worker nodes and, when invoked, are referred to as [Ray tasks](https://docs.ray.io/en/latest/ray-core/tasks.html). By decorating the Python function with `@ray.remote(num_gpus=1)`, it becomes a Ray remote function. However, for now, we keep it simple by running the application code on a single worker node with access to a single GPU instance.
 
+UPDATE: I have augmented the code so that `def main(corpius)` is now decorated with `@ray.remote`. That is, we have specified a Ray remote funciton and, hence, are running distributed workloads. Also, we have currently no GPU resources. Jobs are using CPU only.
+
 In production, we may want to revisit this approach and consider using multiple GPU instances per worker.
 
 The sbdata01 network share is mounted in the worker nodes. The mount point is `/mnt/sbdata01`. The transformers data directory is set to `transformers_postprocess_dir: /mnt/sbdata01/strix/kuberay/transformers_data` in the `config.yml` file. 
